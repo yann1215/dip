@@ -42,21 +42,20 @@ def image_ifft(img_spec):
     return img
 
 
-def limited_inverse_filter(Df, imgMask):
-    imgShape = imgMask.shape
-    limMask = np.copy(imgMask)
+def limited_inverse_filter(Df, img):
+    imgShape = img.shape
+    base = np.zeros(imgShape[:2])
     rows, cols = imgShape[:2]
     center = (rows / 2, cols / 2)
     for x in range(cols):
         for y in range(rows):
-            if (distance((y, x), center) >= Df):
-                limMask[y, x] = 0
-    return limMask
+            base[y, x] = math.exp(((-distance((y-rows/2, x-cols/2), center) ** 2) / (2 * (Df ** 2))))
+    return base
 
 
 # definition
 D0 = 50     # gaussian lowpass filter radius in frequency domain
-Df = 30     # limited inverse filter radius
+Df = 40     # limited inverse filter radius
 
 # load original image
 image_orig = np.load("lab1.npy")
@@ -80,7 +79,7 @@ plt.subplot(2, 2, 3)
 lb.show_image("gaussian filtered image in spatial domain", image_lp)
 
 # add gaussian noise
-image_noise = add_gaussian_noise(image_lp, 0, 9)
+image_noise = add_gaussian_noise(image_lp, 0, 25)
 plt.subplot(2, 2, 4)
 lb.show_image("image with noise in spatial domain", image_noise)
 
