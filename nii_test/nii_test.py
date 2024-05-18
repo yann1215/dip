@@ -1,53 +1,23 @@
 import numpy as np
 import nibabel as nib
-from ipywidgets import interact, interactive, IntSlider, ToggleButtons
 import matplotlib.pyplot as plt
-import seaborn as sns
 
 
-# def explore_3dimage(layer):
-#     plt.figure(figsize=(10, 5))
-#     plt.imshow(image_data[:, :, layer], cmap='gray');
-#     plt.title('Explore Layers of adrenal', fontsize=20)
-#     plt.axis('off')
-#     return layer
+# 加载NIfTI文件
+nii_file = "s001_mask.nii"
+img = nib.load(nii_file)
 
+# 获取图像数据
+data = img.get_fdata()
 
-sns.set_style("darkgrid")
+# 打印数据的形状
+print("数据形状：", data.shape)
 
-image_path = "s001_mask.nii"
-image_obj = nib.load(image_path)
-# print(f"Type of the image {type(image_obj)}")
+# 选择要显示的切片索引
+slice_index = 50
 
-image_data = image_obj.get_fdata()
-# type(image_data)
-
-height, width, depth = image_data.shape
-print(f"The image object height: {height}, width:{width}, depth:{depth}")
-
-print(f"image value range: [{image_data.min()}, {image_data.max()}]")
-# image_data2 = image_data * 255 / (image_data.max() - image_data.min())
-
-# print(image_obj.header.keys())
-pixdim = image_obj.header["pixdim"]
-print(f"z轴分辨率： {pixdim[3]}")
-print(f"in plane 分辨率： {pixdim[1]} * {pixdim[2]}")
-
-z_range = pixdim[3] * depth
-x_range = pixdim[1] * height
-y_range = pixdim[2] * width
-print(x_range, y_range, z_range)
-
-# 随机显示某一层
-# maxval = 177
-# i = np.random.randint(0, maxval)
-# Define a channel to look at
-
-i = 50
-print(f"Plotting z Layer {i} of Image")
-plt.imshow(image_data[:, :, i], cmap="gray")
-plt.axis("off")
-
-# interact(explore_3dimage, layer=(0, image_data.shape[-1]))
-
+# 显示切片
+plt.imshow(data[:, :, slice_index], cmap='gray')
+plt.axis('off')  # 不显示坐标轴
+plt.title('Slice {}'.format(slice_index))
 plt.show()
