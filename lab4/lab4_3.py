@@ -38,7 +38,8 @@ def image_fft(img):
 def image_ifft(img_spec):
     img = np.fft.ifftshift(img_spec)
     img = np.fft.ifft2(img)
-    img = np.real(img)
+    # img = np.real(img)
+    img = abs(img)
     return img
 
 
