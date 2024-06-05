@@ -9,18 +9,18 @@ def morphological_processing(mask):
     kernel = np.ones((5, 5), np.uint8)
 
     # Erosion
-    erosion = cv2.erode(mask, kernel, iterations=1)
+    mask_out = cv2.erode(mask, kernel, iterations=1)
 
     # Dilation
-    dilation = cv2.dilate(mask, kernel, iterations=1)
+    mask_out = cv2.dilate(mask_out, kernel, iterations=1)
 
     # Opening (erosion followed by dilation)
-    opening = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
+    mask_out = cv2.morphologyEx(mask_out, cv2.MORPH_OPEN, kernel)
 
     # Closing (dilation followed by erosion)
-    closing = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
+    mask_out = cv2.morphologyEx(mask_out, cv2.MORPH_CLOSE, kernel)
 
-    return erosion, dilation, opening, closing
+    return mask_out
 
 
 def edge_detection(image):
@@ -77,7 +77,7 @@ mask = np.load(mask_path)
 
 # ---------- Get Edges ----------
 # Perform morphological processing on the mask
-erosion, dilation, opening, closing = morphological_processing(mask)
+mask = morphological_processing(mask)
 
 # Perform edge detection on the image
 sobel_edges, prewitt_edges, roberts_edges = edge_detection(mask)

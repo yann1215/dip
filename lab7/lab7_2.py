@@ -10,9 +10,9 @@ def calculate_homogeneity(glcm):
     for i in range(rows):
         for j in range(cols):
             # according to function graycomatrix()
-            # homogeneity += glcm[i, j, 0, 0] / (1 + abs(i - j) ** 2)
+            homogeneity += glcm[i, j, 0, 0] / (1 + abs(i - j) ** 2)
             # according to lecture
-            homogeneity += glcm[i, j, 0, 0] / (1 + abs(i - j))
+            # homogeneity += glcm[i, j, 0, 0] / (1 + abs(i - j))
     return homogeneity
 
 
@@ -28,9 +28,9 @@ def calculate_contrast(glcm):
 
 def calculate_energy(glcm):
     # according to function graycomatrix()
-    # energy = np.sqrt(np.sum(glcm[:, :, 0, 0] ** 2))
+    energy = np.sqrt(np.sum(glcm[:, :, 0, 0] ** 2))
     # according to lecture
-    energy = np.sum(glcm[:, :, 0, 0] ** 2)
+    # energy = np.sum(glcm[:, :, 0, 0] ** 2)
     return energy
 
 
@@ -43,7 +43,7 @@ mask_path = "mask.npy"
 image = np.load(image_path)
 mask = np.load(mask_path)
 
-is_tumor = 1
+is_tumor = 0
 if is_tumor:
     # process tumor region
     image = np.multiply(image, mask)
